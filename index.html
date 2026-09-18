@@ -375,9 +375,47 @@
 <!-- ============================ ABSTRACT ============================ -->
 <section class="abstract">
   <div class="wrap">
+
     <p class="section-kicker">Abstract</p>
+
     <div class="narrow" style="margin-top:22px">
-      <p> This paper presents LiteHand-YOLO, a lightweight single-stage hand detector designed for real-time robotic vision. Built on the YOLOv8n backbone, the model incorporates depthwise separable convolutions and cross-stage partial connections, augmented by Efficient Channel Attention (ECA) for channel recalibration and Coordinate Attention (CoordAtt) for spatial localization, together with targeted detection head refinements. Trained and evaluated on the Hand Keypoints dataset, LiteHand-YOLO achieves 99.26 % mAP@0.5 and 91.42 % mAP@0.5:0.95, outperforming the baseline YOLOv8n by +0.08 % and +1.30 % respectively, while reducing computational cost by 28 % (6.4 GFLOPs) and parameters by 35 % (2.06 M). On an Intel Core i7-6700 CPU (no GPU), it delivers 8.83 FPS with mean confidence of 0.87, a 6.4 % speed gain and 12.8 % higher precision over the baseline. These results enable reliable, low-latency hand detection on resource constrained platforms, supporting vision guided grasping, gesture based teleoperation, and safe human-robot collaboration in dynamic environments.</p>
+
+      <p>
+        Hand tracking is an important component of human-computer
+        interaction and vision-guided robotics, where accurate and
+        low-latency hand localization is essential for manipulation,
+        teleoperation, and human-robot collaboration.
+      </p>
+
+      <p>
+        We present <b>LiteHand-YOLO</b>, a lightweight single-stage
+        hand detector based on YOLOv8n. The architecture integrates
+        depthwise separable convolutions and cross-stage partial
+        connections with <b>Efficient Channel Attention (ECA)</b> and
+        <b>Coordinate Attention (CoordAtt)</b>, together with targeted
+        detection-head refinements. These modifications are designed
+        to improve fine-grained hand feature representation while
+        maintaining low computational cost.
+      </p>
+
+      <p>
+        On the Hand Keypoints Dataset, LiteHand-YOLO achieves
+        <b>99.26% mAP@0.5</b> and <b>91.42% mAP@0.5:0.95</b>,
+        improving over YOLOv8n by <b>+0.08%</b> and <b>+1.30%</b>,
+        respectively. At the same time, the model reduces computational
+        cost by approximately <b>28%</b> to 6.4 GFLOPs and reduces the
+        parameter count by approximately <b>35%</b> to 2.06M.
+      </p>
+
+      <p>
+        On an Intel Core i7-6700 CPU without GPU acceleration,
+        LiteHand-YOLO reaches <b>8.83 FPS</b> with a mean detection
+        confidence of <b>0.87</b>, corresponding to a 6.4% speed
+        improvement over the baseline. These results demonstrate the
+        potential of LiteHand-YOLO for low-resource, real-time robotic
+        hand detection.
+      </p>
+
     </div>
   </div>
 </section>
