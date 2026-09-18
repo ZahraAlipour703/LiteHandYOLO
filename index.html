@@ -492,248 +492,683 @@
   </div>
 </section>
 
-<hr class="cmap-rule">
-
-<!-- ============================ FINDINGS ============================ -->
 <section>
   <div class="wrap">
-    <p class="section-kicker">Findings</p>
 
     <div class="subsec">
-      <h3>1. Perceptual Validation &ndash; User Study</h3>
-      <p>In order to assess whether our proposed <b>Curvature Reconstruction Error (CRE)</b> aligns more closely with human judgment than traditional Euclidean metrics, we conducted a user study.</p>
-      <p class="sublabel">User Study Protocol</p>
+
+      <h3>YOLOv8n Baseline</h3>
+
+      <p>
+        YOLOv8 is a single-stage, anchor-free detector composed of
+        a backbone, feature-aggregation neck, and detection head.
+        The nano variant, YOLOv8n, is designed for resource-constrained
+        environments while maintaining strong detection capability.
+      </p>
+
       <ul class="facts">
-        <li>19 annotators, diverse backgrounds</li>
-        <li>Pairwise comparisons of nose reconstructions</li>
-        <li>2,414 pairs &rarr; 1,085 labeled (&ge;75% agreement, &ge;5 votes)</li>
-        <li>BFM reconstructions of <a href="https://github.com/czh-98/REALY" target="_blank" rel="noopener">REALY</a> faces</li>
+        <li><b>Backbone:</b> hierarchical feature extraction using C2f blocks</li>
+        <li><b>Neck:</b> PANet-inspired multi-scale feature aggregation</li>
+        <li><b>Head:</b> anchor-free, decoupled detection across P3, P4, and P5</li>
       </ul>
 
-      <!-- Fig. 3 -> static/images/user_study_pairs.png -->
       <figure class="figblock" style="margin-top:28px">
-        <img src="static/images/user_study_pairs.png" alt="Three pairs of nose reconstructions, each shown with its CRE and NMSE values and the reconstruction the annotators judged more faithful.">
-        <figcaption>Example of three pairs with their metrics and the user choice.</figcaption>
+        <img
+          src="static\images\Drawing 2025-11-07 08.53.13.excalidraw.png"
+          alt="YOLOv8n baseline architecture."
+        >
+        <figcaption>
+          Baseline YOLOv8n architecture used as the foundation for
+          LiteHand-YOLO.
+        </figcaption>
       </figure>
 
-      <p class="tbl-caption">Correspondence of reconstruction metrics with human judgments. Top: comparison with existing metrics. Bottom: ablation over <span class="m">&#8496;<sub>CRE</sub></span> hyperparameters.</p>
-      <div class="tbl-wrap">
-        <table class="data">
-          <thead>
-            <tr>
-              <th>Metric</th><th>Mapping</th><th><i>R</i></th><th><i>K</i></th><th>Norm</th><th>Pairwise-Accuracy, %</th><th>Pairwise-ROC-AUC, %</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td><span class="m">&#8496;<sub>NMSE</sub><sup>REALY</sup></span></td><td>REALY</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>53.92</td><td>56.53</td></tr>
-            <tr><td><span class="m">&#8496;<sub>NMSE</sub><sup>pts</sup></span></td><td>Points-to-surface</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>49.32</td><td>55.02</td></tr>
-            <tr><td><span class="m">&#8496;<sub>NMSE</sub><sup>vtx</sup></span></td><td>Vertex-to-vertex</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>42.03</td><td>42.47</td></tr>
-            <tr class="best"><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>3</td><td>128</td><td><i>L</i><sub>1</sub></td><td>73.63</td><td>82.66</td></tr>
-            <tr class="grp"><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>1</td><td>128</td><td><i>L</i><sub>1</sub></td><td>71.38</td><td>80.63</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>1</td><td>512</td><td><i>L</i><sub>1</sub></td><td>68.32</td><td>78.17</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>1</td><td>1024</td><td><i>L</i><sub>1</sub></td><td>66.52</td><td>74.35</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>2</td><td>128</td><td><i>L</i><sub>1</sub></td><td>72.46</td><td>81.86</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>2</td><td>512</td><td><i>L</i><sub>1</sub></td><td>68.77</td><td>77.46</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>2</td><td>1024</td><td><i>L</i><sub>1</sub></td><td>66.79</td><td>77.46</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>3</td><td>512</td><td><i>L</i><sub>1</sub></td><td>70.66</td><td>79.36</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>3</td><td>1024</td><td><i>L</i><sub>1</sub></td><td>69.85</td><td>78.83</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>4</td><td>128</td><td><i>L</i><sub>1</sub></td><td>73.00</td><td>81.85</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>4</td><td>512</td><td><i>L</i><sub>1</sub></td><td>70.93</td><td>79.40</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>4</td><td>1024</td><td><i>L</i><sub>1</sub></td><td>70.66</td><td>79.17</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>3</td><td>128</td><td><i>L</i><sub>2</sub></td><td>72.28</td><td>81.17</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>3</td><td>512</td><td><i>L</i><sub>2</sub></td><td>69.67</td><td>77.81</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>3</td><td>1024</td><td><i>L</i><sub>2</sub></td><td>68.14</td><td>76.99</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>3</td><td>128</td><td><i>Huber</i></td><td>67.60</td><td>75.82</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>3</td><td>512</td><td><i>Huber</i></td><td>62.74</td><td>70.40</td></tr>
-            <tr><td><span class="m">&#8496;<sub>CRE</sub></span></td><td>Points-to-surface</td><td>3</td><td>1024</td><td><i>Huber</i></td><td>61.57</td><td>69.51</td></tr>
-          </tbody>
-        </table>
-      </div>
     </div>
 
-    <div class="subsec">
-      <h3>2. Age &ndash; CRE Pearson Correlation</h3>
-      <p>CRE detects bias with respect to age, whereas NMSE-based metrics cannot capture it.</p>
-
-      <!-- Fig. 4 -> static/images/age_bias.png -->
-      <figure class="figblock" style="margin-top:24px">
-        <img src="static/images/age_bias.png" alt="A senior subject from REALY reconstructed by BFM, FLAME, and five image-based models, each smoothing away high-frequency facial detail.">
-        <figcaption>Example of age bias on a senior person from REALY benchmark.</figcaption>
-      </figure>
-
-      <p class="tbl-caption">Pearson correlation coefficients between age and CRE across different regions. Strong correlations (&ge; 0.5) are highlighted in bold.</p>
-      <div class="tbl-wrap">
-        <table class="data">
-          <thead>
-            <tr>
-              <th colspan="2" rowspan="3" class="corner vr"></th>
-              <th colspan="12">Pearson correlation: <span class="m">&#8496;<sub>CRE</sub></span> vs. 3D Reconstruction</th>
-            </tr>
-            <tr>
-              <th colspan="3" class="vr">@nose</th>
-              <th colspan="3" class="vr">@mouth</th>
-              <th colspan="3" class="vr">@cheek</th>
-              <th colspan="3">@forehead</th>
-            </tr>
-            <tr>
-              <th>All</th><th>Female</th><th class="vr">Male</th>
-              <th>All</th><th>Female</th><th class="vr">Male</th>
-              <th>All</th><th>Female</th><th class="vr">Male</th>
-              <th>All</th><th>Female</th><th>Male</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td rowspan="2" class="grouplabel vr">3DMM Repr.</td>
-              <td class="name vr">BFM</td>
-              <td>0.39</td><td>0.32</td><td class="b vr">0.59</td>
-              <td>0.33</td><td>0.21</td><td class="b vr">0.67</td>
-              <td class="b">0.77</td><td class="b">0.72</td><td class="b vr">0.88</td>
-              <td class="b">0.52</td><td>0.49</td><td class="b">0.59</td>
-            </tr>
-            <tr>
-              <td class="name vr">FLAME</td>
-              <td class="b">0.78</td><td class="b">0.79</td><td class="b vr">0.78</td>
-              <td>-0.03</td><td>-0.16</td><td class="vr">0.18</td>
-              <td class="b">0.82</td><td class="b">0.84</td><td class="b vr">0.82</td>
-              <td>0.41</td><td>0.48</td><td>0.25</td>
-            </tr>
-            <tr class="grp">
-              <td rowspan="5" class="grouplabel vr botrule">Model from 2D image</td>
-              <td class="name vr">Deep3D</td>
-              <td>0.24</td><td>0.18</td><td class="vr">0.41</td>
-              <td>-0.23</td><td>-0.19</td><td class="vr">-0.38</td>
-              <td class="b">0.69</td><td class="b">0.81</td><td class="b vr">0.62</td>
-              <td class="b">0.58</td><td class="b">0.54</td><td class="b">0.66</td>
-            </tr>
-            <tr>
-              <td class="name vr">3DDFA-v3</td>
-              <td class="b">0.67</td><td class="b">0.65</td><td class="b vr">0.73</td>
-              <td>0.31</td><td>0.30</td><td class="vr">0.37</td>
-              <td class="b">0.79</td><td class="b">0.78</td><td class="b vr">0.88</td>
-              <td class="b">0.53</td><td class="b">0.55</td><td>0.48</td>
-            </tr>
-            <tr>
-              <td class="name vr">MGCNet</td>
-              <td class="b">0.54</td><td class="b">0.50</td><td class="b vr">0.67</td>
-              <td>0.30</td><td>0.30</td><td class="vr">0.32</td>
-              <td class="b">0.80</td><td class="b">0.79</td><td class="b vr">0.89</td>
-              <td class="b">0.51</td><td class="b">0.54</td><td>0.47</td>
-            </tr>
-            <tr>
-              <td class="name vr">DECA</td>
-              <td class="b">0.73</td><td class="b">0.75</td><td class="b vr">0.70</td>
-              <td>-0.32</td><td>-0.30</td><td class="vr">-0.35</td>
-              <td class="b">0.76</td><td class="b">0.80</td><td class="b vr">0.85</td>
-              <td>0.40</td><td>0.46</td><td>0.28</td>
-            </tr>
-            <tr>
-              <td class="name vr">MICA</td>
-              <td class="b">0.69</td><td class="b">0.72</td><td class="b vr">0.65</td>
-              <td>-0.31</td><td>-0.31</td><td class="vr">-0.30</td>
-              <td class="b">0.79</td><td class="b">0.76</td><td class="b vr">0.88</td>
-              <td>0.43</td><td>0.48</td><td>0.31</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="subsec">
-      <h3>3. Ethnicity with respect to Error Clusters</h3>
-      <p>CRE offers preliminary insights on bias with respect to ethnicity.</p>
-
-      <!-- Fig. 5 -> static/images/error_clusters.png -->
-      <figure class="figblock" style="margin-top:24px">
-        <img src="static/images/error_clusters.png" alt="Rows of error-cluster centroid maps for BFM and FLAME nose reconstructions.">
-        <figcaption>Error cluster centroids found for BFM (top row) and FLAME (bottom row).</figcaption>
-      </figure>
-
-      <!-- Fig. 6 -> static/images/bfm_nose_error_clusters.png + flame_nose_error_clusters.png -->
-      <figure class="figblock subfig" style="margin-top:32px">
-        <figcaption>Distribution of failure modes @nose for each ethnicity in REALY benchmark.</figcaption>
-        <div class="subfig-row">
-          <div class="subfig-item">
-            <span class="sublabel">BFM</span>
-            <img src="static/images/bfm_nose_error_clusters.png" alt="Distribution of BFM nose failure modes across ethnicities in the REALY benchmark.">
-          </div>
-          <div class="subfig-item">
-            <span class="sublabel">FLAME</span>
-            <img src="static/images/flame_nose_error_clusters.png" alt="Distribution of FLAME nose failure modes across ethnicities in the REALY benchmark.">
-          </div>
-        </div>
-      </figure>
-
-      <p style="margin-top:24px">Asian and African participants have one specific failure mode.</p>
-      <!-- Fig. 7 -> static/images/asian_african_failure_mode.png -->
-      <figure class="figblock" style="margin-top:8px">
-        <img src="static/images/asian_african_failure_mode.png" alt="African and Asian subjects whose BFM reconstructions all fall into the same failure mode at the nose.">
-        <figcaption>Example of African and Asian subjects affected by a failure mode 1 of BFM.</figcaption>
-      </figure>
-    </div>
-
-    <div class="subsec">
-      <h3>4. Morphology Traits with respect to Error Clusters</h3>
-      <ul class="facts">
-        <li>Each CRE failure mode corresponds to a specific morphology.</li>
-        <li>3DMM failure modes are systematic rather than stochastic.</li>
-      </ul>
-
-      <!-- Fig. 8 -> static/images/morphology_clusters.png (rename to your file) -->
-      <figure class="figblock" style="margin-top:24px">
-        <img src="static/images/morphology_clusters.png" alt="Centroids for error clusters identified for BFM and FLAME, each annotated with the principal component of maximal mean absolute value and its sign.">
-        <figcaption>PC centroids for error clusters identified for BFM and FLAME. In (&middot;) there are the number of PC that has maximal mean absolute value for the corresponding error cluster and its sign.</figcaption>
-      </figure>
-    </div>
   </div>
 </section>
 
 <hr class="cmap-rule">
 
+<!-- ============================ RESULTS ============================ -->
+<section>
+  <div class="wrap">
+
+    <p class="section-kicker">Results</p>
+
+    <!-- ==================== 1. OVERALL PERFORMANCE ==================== -->
+    <div class="subsec">
+
+      <h3>1. Overall Detection Performance</h3>
+
+      <p>
+        LiteHand-YOLO was evaluated on the Hand Keypoints Dataset (HKD)
+        using the same evaluation protocol as the YOLOv8n baseline.
+        The proposed model improves detection accuracy while reducing
+        model complexity.
+      </p>
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="num warm">99.26%</div>
+          <div class="lbl">mAP@0.5</div>
+        </div>
+
+        <div class="stat">
+          <div class="num cool">91.42%</div>
+          <div class="lbl">mAP@0.5:0.95</div>
+        </div>
+
+        <div class="stat">
+          <div class="num">6.4</div>
+          <div class="lbl">GFLOPs</div>
+        </div>
+
+        <div class="stat">
+          <div class="num">2.06M</div>
+          <div class="lbl">Parameters</div>
+        </div>
+
+      </div>
+
+      <!-- Replace with your actual Fig. 4 image -->
+      <figure class="figblock" style="margin-top:32px">
+        <img
+          src="static/images/hdk.png"
+          alt="LiteHand-YOLO results on the Hand Keypoints Dataset."
+        >
+        <figcaption>
+          LiteHand-YOLO achieves 97.82% precision, 98.26% recall,
+          99.26% mAP@0.5, and 91.42% mAP@0.5:0.95 on the Hand
+          Keypoints Dataset.
+        </figcaption>
+      </figure>
+
+      <p class="tbl-caption">
+        Comparison between YOLOv8n and LiteHand-YOLO on the
+        Hand Keypoints Dataset.
+      </p>
+
+      <div class="tbl-wrap">
+        <table class="data">
+
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Parameters</th>
+              <th>GFLOPs</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>mAP@0.5</th>
+              <th>mAP@0.5:0.95</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td class="name">YOLOv8n</td>
+              <td>3.16M</td>
+              <td>8.9</td>
+              <td>97.56</td>
+              <td>98.07</td>
+              <td>99.18</td>
+              <td>90.12</td>
+            </tr>
+
+            <tr class="best">
+              <td class="name">LiteHand-YOLO</td>
+              <td>2.06M</td>
+              <td>6.4</td>
+              <td>97.82</td>
+              <td>98.26</td>
+              <td>99.26</td>
+              <td>91.42</td>
+            </tr>
+
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+
+
+    <!-- ==================== 2. CROSS DATASET ==================== -->
+    <div class="subsec">
+
+      <h3>2. Cross-Dataset Generalization</h3>
+
+      <p>
+        To examine generalization across datasets with different visual
+        characteristics, LiteHand-YOLO was evaluated on both EgoHands
+        and the Hand Keypoints Dataset under a common 100-epoch training
+        protocol.
+      </p>
+
+      <div class="tbl-wrap">
+
+        <table class="data">
+
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Dataset</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>mAP@0.5</th>
+              <th>mAP@0.5:0.95</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td class="name">YOLOv8n</td>
+              <td>EgoHands</td>
+              <td>98.27</td>
+              <td>97.03</td>
+              <td>99.11</td>
+              <td>80.94</td>
+            </tr>
+
+            <tr>
+              <td class="name">LiteHand-YOLO</td>
+              <td>EgoHands</td>
+              <td>98.30</td>
+              <td>96.10</td>
+              <td>99.00</td>
+              <td>78.30</td>
+            </tr>
+
+            <tr>
+              <td class="name">YOLOv8n</td>
+              <td>HKD</td>
+              <td>97.56</td>
+              <td>98.06</td>
+              <td>99.18</td>
+              <td>90.11</td>
+            </tr>
+
+            <tr class="best">
+              <td class="name">LiteHand-YOLO</td>
+              <td>HKD</td>
+              <td>97.82</td>
+              <td>98.25</td>
+              <td>99.26</td>
+              <td>91.41</td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <p style="margin-top:22px">
+        On EgoHands, LiteHand-YOLO retains strong detection performance,
+        with a decrease in mAP@0.5:0.95 compared with its HKD result,
+        reflecting the greater visual diversity and clutter of the
+        egocentric dataset.
+      </p>
+
+    </div>
+
+
+    <!-- ==================== 3. ABLATION ==================== -->
+    <div class="subsec">
+
+      <h3>3. Ablation Study</h3>
+
+      <p>
+        We progressively evaluated the proposed architectural components
+        to determine their contribution to model accuracy and efficiency.
+        The study considers Efficient Channel Attention (ECA),
+        Coordinate Attention (CoordAtt), and detection-head refinement.
+      </p>
+
+      <div class="tbl-wrap">
+
+        <table class="data">
+
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Layers</th>
+              <th>Parameters</th>
+              <th>GFLOPs</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>mAP@0.5</th>
+              <th>mAP@0.5:0.95</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td class="name">YOLOv8n</td>
+              <td>129</td>
+              <td>3.16M</td>
+              <td>8.9</td>
+              <td>97.56</td>
+              <td>98.07</td>
+              <td>99.18</td>
+              <td>90.12</td>
+            </tr>
+
+            <tr>
+              <td class="name">+ ECA</td>
+              <td>75</td>
+              <td>3.01M</td>
+              <td>8.1</td>
+              <td>97.80</td>
+              <td>98.00</td>
+              <td>99.20</td>
+              <td>90.40</td>
+            </tr>
+
+            <tr>
+              <td class="name">+ ECA + CoordAtt</td>
+              <td>137</td>
+              <td>565,531</td>
+              <td>2.8</td>
+              <td>97.90</td>
+              <td>98.00</td>
+              <td>99.30</td>
+              <td>90.30</td>
+            </tr>
+
+            <tr>
+              <td class="name">+ Head Enhancement</td>
+              <td>129</td>
+              <td>1.57M</td>
+              <td>4.4</td>
+              <td>97.70</td>
+              <td>97.70</td>
+              <td>99.20</td>
+              <td>89.30</td>
+            </tr>
+
+            <tr class="best">
+              <td class="name">LiteHand-YOLO</td>
+              <td>121</td>
+              <td>2.06M</td>
+              <td>6.4</td>
+              <td>97.82</td>
+              <td>98.26</td>
+              <td>99.26</td>
+              <td>91.42</td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <p style="margin-top:22px">
+        The final architecture combines the attention modules with
+        detection-head refinement, providing the strongest overall
+        balance between detection performance and computational cost.
+      </p>
+
+    </div>
+
+
+    <!-- ==================== 4. ATTENTION COMPARISON ==================== -->
+    <div class="subsec">
+
+      <h3>4. Attention Mechanism Comparison</h3>
+
+      <p>
+        To assess the efficiency of different attention mechanisms,
+        ECA, CoordAtt, GAM, and CBAM were integrated into YOLOv8n
+        under comparable experimental conditions.
+      </p>
+
+      <div class="tbl-wrap">
+
+        <table class="data">
+
+          <thead>
+            <tr>
+              <th>Model Variant</th>
+              <th>Layers</th>
+              <th>Parameters</th>
+              <th>GFLOPs</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>mAP@0.5</th>
+              <th>mAP@0.5:0.95</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td class="name">YOLOv8n + ECA</td>
+              <td>75</td>
+              <td>3.01M</td>
+              <td>8.1</td>
+              <td>97.90</td>
+              <td>98.00</td>
+              <td>99.20</td>
+              <td>90.40</td>
+            </tr>
+
+            <tr>
+              <td class="name">YOLOv8n + CoordAtt</td>
+              <td>72</td>
+              <td>2.97M</td>
+              <td>2.2</td>
+              <td>97.70</td>
+              <td>97.90</td>
+              <td>99.20</td>
+              <td>89.90</td>
+            </tr>
+
+            <tr>
+              <td class="name">YOLOv8n + GAM</td>
+              <td>152</td>
+              <td>6.91M</td>
+              <td>23.5</td>
+              <td>97.70</td>
+              <td>97.00</td>
+              <td>99.00</td>
+              <td>89.80</td>
+            </tr>
+
+            <tr>
+              <td class="name">YOLOv8n + CBAM</td>
+              <td>152</td>
+              <td>3.70M</td>
+              <td>9.7</td>
+              <td>97.92</td>
+              <td>97.87</td>
+              <td>99.17</td>
+              <td>90.08</td>
+            </tr>
+
+            <tr class="best">
+              <td class="name">ECA + CoordAtt</td>
+              <td>137</td>
+              <td>565,531</td>
+              <td>2.8</td>
+              <td>97.90</td>
+              <td>98.00</td>
+              <td>99.30</td>
+              <td>90.30</td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================== 5. REAL-TIME TEST ==================== -->
+    <div class="subsec">
+
+      <h3>5. Real-Time CPU Evaluation</h3>
+
+      <p>
+        To assess deployment under resource-constrained conditions,
+        LiteHand-YOLO was benchmarked on 300 frames at 640 × 480
+        resolution using an Intel Core i7-6700 CPU without GPU
+        acceleration. The evaluation included varying hand poses,
+        occlusions, and lighting conditions.
+      </p>
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="num warm">8.83</div>
+          <div class="lbl">FPS</div>
+        </div>
+
+        <div class="stat">
+          <div class="num">113.22</div>
+          <div class="lbl">ms / frame</div>
+        </div>
+
+        <div class="stat">
+          <div class="num cool">0.87</div>
+          <div class="lbl">Mean confidence</div>
+        </div>
+
+        <div class="stat">
+          <div class="num">+6.4%</div>
+          <div class="lbl">FPS improvement</div>
+        </div>
+
+      </div>
+
+      <!-- Replace with your actual Fig. 5 / Fig. 6 image -->
+      <figure class="figblock" style="margin-top:32px">
+        <img
+          src="static/images/real-time.png"
+          alt="Real-time CPU comparison between YOLOv8n and LiteHand-YOLO."
+        >
+        <figcaption>
+          Real-time evaluation comparing inference speed and latency
+          between YOLOv8n and LiteHand-YOLO on CPU.
+        </figcaption>
+      </figure>
+
+      <div class="tbl-wrap" style="margin-top:30px">
+
+        <table class="data">
+
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>YOLOv8n</th>
+              <th>LiteHand-YOLO</th>
+              <th>Delta</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td class="name">Average FPS</td>
+              <td>8.30</td>
+              <td>8.83</td>
+              <td>+6.4%</td>
+            </tr>
+
+            <tr>
+              <td class="name">Average Latency</td>
+              <td>120.51 ms</td>
+              <td>113.22 ms</td>
+              <td>−6.0%</td>
+            </tr>
+
+            <tr>
+              <td class="name">Mean Confidence</td>
+              <td>0.77</td>
+              <td>0.87</td>
+              <td>+12.8%</td>
+            </tr>
+
+            <tr>
+              <td class="name">FPS Std. Dev.</td>
+              <td>0.45</td>
+              <td>0.38</td>
+              <td>−15.6%</td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================== 6. QUALITATIVE RESULTS ==================== -->
+    <div class="subsec">
+
+      <h3>6. Qualitative Results</h3>
+
+      <p>
+        The qualitative evaluation illustrates LiteHand-YOLO's ability
+        to localize hands under changes in pose, scale, illumination,
+        and partial occlusion.
+      </p>
+
+      <!-- Replace with your actual qualitative figure -->
+      <figure class="figblock" style="margin-top:28px">
+        <img
+          src="static/images/qualitive.png"
+          alt="Qualitative hand detection results produced by LiteHand-YOLO."
+        >
+        <figcaption>
+          Representative hand detection examples produced by
+          LiteHand-YOLO under different visual conditions.
+        </figcaption>
+      </figure>
+
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="cmap-rule">
+
+
+<!-- ============================ CONCLUSION ============================ -->
+<section class="abstract">
+
+  <div class="wrap">
+
+    <p class="section-kicker">Conclusion</p>
+
+    <div class="narrow" style="margin-top:22px">
+
+      <p>
+        LiteHand-YOLO is a lightweight YOLOv8n-based hand detector
+        incorporating Efficient Channel Attention, Coordinate Attention,
+        lightweight convolutional operations, and detection-head
+        refinement.
+      </p>
+
+      <p>
+        On the Hand Keypoints Dataset, the model achieves
+        <b>99.26% mAP@0.5</b> and <b>91.42% mAP@0.5:0.95</b>
+        while reducing computational cost to <b>6.4 GFLOPs</b>
+        and the parameter count to approximately <b>2.06M</b>.
+      </p>
+
+      <p>
+        CPU-based evaluation further reports <b>8.83 FPS</b> on an
+        Intel Core i7-6700 system without GPU acceleration, supporting
+        the use of the model in resource-constrained robotic vision
+        applications.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<hr class="cmap-rule">
+
+
 <!-- ============================ BIBTEX ============================ -->
 <section id="bibtex">
+
   <div class="wrap">
+
     <p class="section-kicker">Citation</p>
+
     <h2 class="section-head">BibTeX</h2>
+
     <div class="bib" style="margin-top:22px">
+
       <div class="bib-head">
         <span>bibtex</span>
         <button class="copybtn" id="copybib">Copy</button>
       </div>
-<pre id="bibtext">@article{shilova2026discovering,
-  title={Discovering Geometric Biases in 3D Face Reconstruction: A Curvature-Aware Spectral Framework for Fairness Evaluation},
-  author={Shilova, Veronika and Malherbe, Emmanuel and Palma, Giovanni and Bokaris, Panagiotis-Alexandros and Risser, Laurent and Loubes, Jean-Michel},
-  journal={arXiv preprint arXiv:2607.07486},
-  year={2026}
+
+      <pre id="bibtext">@article{alipour2025litehand,
+  title={Efficient Attention-Enhanced YOLOv8n for Robust Hand Tracking},
+  author={Alipour, Zahra and ...},
+  year={2025}
 }</pre>
+
     </div>
+
   </div>
+
 </section>
+
 
 <hr class="cmap-rule">
 
+
 <!-- ============================ CONTACT ============================ -->
 <section>
+
   <div class="wrap">
+
     <p class="section-kicker">Contact</p>
-    <p class="narrow" style="margin-top:16px">If you have any question, please contact <a href="mailto:veronika.v.shilova@gmail.com">Veronika Shilova</a>.</p>
+
+    <p class="narrow" style="margin-top:16px">
+      For questions about LiteHand-YOLO, please contact
+      <a href="mailto:YOUR_EMAIL@example.com">
+        Zahra Alipour
+      </a>.
+    </p>
+
   </div>
+
 </section>
+
 
 <!-- ============================ FOOTER ============================ -->
 <footer>
+
   <div class="wrap">
-    <p>Ground-truth scans are from the <a href="https://github.com/czh-98/REALY" target="_blank" rel="noopener">REALY</a> benchmark.</p>
+
+    <p>
+      LiteHand-YOLO —
+      <a
+        href="YOUR_GITHUB_URL"
+        target="_blank"
+        rel="noopener">
+        GitHub Repository
+      </a>
+    </p>
+
   </div>
+
 </footer>
+
 
 <script>
   document.getElementById('copybib').addEventListener('click', function(){
     var text = document.getElementById('bibtext').innerText;
+
     navigator.clipboard.writeText(text).then(function(){
+
       var b = document.getElementById('copybib');
+
       b.textContent = 'Copied';
-      setTimeout(function(){ b.textContent = 'Copy'; }, 1600);
+
+      setTimeout(function(){
+        b.textContent = 'Copy';
+      }, 1600);
+
     });
   });
 </script>
