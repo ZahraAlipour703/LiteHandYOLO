@@ -309,52 +309,64 @@
 <!-- ============================ HERO ============================ -->
 <header class="hero">
   <div class="wrap">
-      <h1 class="title reveal">
+
+    <h1 class="title reveal">
       LiteHand-YOLO:<br>
       Efficient Attention-Enhanced YOLOv8n for Robust Hand Tracking
     </h1>
 
-    <div class="badge reveal d1">ICRoM 2025</div>
-
-    <!-- Affiliation logos — drop PNGs at these paths (left-to-right order below) -->
-    <div class="logos reveal d1">
-      <img src="static/images/icrom_logo.jpeg" alt="">
-      <!-- <img src="static/images/logo-imt.png" alt="">
-      <img src="static/images/logo-loreal.png" alt="">
-      <img src="static/images/logo-aniti.png" alt="">
-      <img src="static/images/logo-inria.png" alt=""> -->
+    <div class="badge reveal d1">
+      Real-Time Robotic Vision
     </div>
 
     <div class="authors reveal d2">
       <span class="author">Zahra Alipour<sup>1</sup></span>
-      <span class="author">Alireza Nazari<sup>2</sup></span>
+      <!-- Add remaining authors exactly as listed in the paper -->
     </div>
 
     <div class="affil reveal d2">
-      <span class="aff"><span class="num">1</span>Research and Development Department AstraBionics Technologies Inc, TorontoL1X0G3, Canada</span>,&nbsp;
-      <span class="aff"><span class="num">2</span>Research and Development Department AstraBionics Technologies Inc, TorontoL1X0G3, Canada</span>,&nbsp;
+      <span class="aff">
+        <span class="num">1</span>
+        Your exact affiliation from the manuscript
+      </span>
     </div>
 
     <div class="actions reveal d3">
-      <a class="btn" href="https://github.com/ZahraAlipour703/LiteHandYOLO.git" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a0 0 0 0 1 0 0H6a0 0 0 0 1 0 0V2Zm8 1v5h5"/></svg>
+
+      <a class="btn"
+         href="YOUR_PAPER_URL"
+         target="_blank"
+         rel="noopener">
         Paper
       </a>
-      <a class="btn ghost" href="https://github.com/ZahraAlipour703/LiteHand-YOLO.git" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M12 1C5.9 1 1 5.9 1 12c0 4.9 3.2 9 7.6 10.4.6.1.8-.2.8-.5v-1.8c-3.1.7-3.8-1.5-3.8-1.5-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 1.7 2.6 1.2 3.2.9.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.2-5.1-5.5 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1.9-.2 1.8-.4 2.7-.4.9 0 1.8.1 2.7.4 2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.8 1.1 1.8 1.1 3 0 4.3-2.6 5.2-5.1 5.5.4.3.8 1 .8 2.1v3c0 .3.2.6.8.5C19.8 21 23 16.9 23 12 23 5.9 18.1 1 12 1Z"/></svg>
+
+      <a class="btn ghost"
+         href="YOUR_GITHUB_URL"
+         target="_blank"
+         rel="noopener">
         Code
       </a>
-    </div>
-    <p class="note reveal d3">Code and annotation data are released on GitHub.</p>
 
-    <!-- TEASER: export Fig. 1 to static/images/teaser.png (high-DPI or SVG) -->
+    </div>
+
+    <p class="note reveal d3">
+      A lightweight single-stage hand detector for real-time robotic vision.
+    </p>
+
     <figure class="teaser reveal d4">
-      <img src="static\images\146.png" alt="Overview of the curvature-aware evaluation framework: from a ground-truth scan and its 3D reconstruction, the mesh is anatomically segmented, curvature-based error maps are computed with the Laplace-Beltrami operator, and spectral clustering reveals failure modes.">
-      <figcaption>LiteHand-YOLO enhances the lightweight YOLOv8n architecture with
-attention mechanisms designed to improve hand-feature representation
-while preserving the computational efficiency required for real-time
-hand tracking.</figcaption>
+      <img
+        src="static/images/146.png"
+        alt="Overview of LiteHand-YOLO, a lightweight YOLOv8n-based hand detector enhanced with ECA, Coordinate Attention, depthwise convolutions, and detection-head refinements."
+      >
+
+      <figcaption>
+        LiteHand-YOLO builds on YOLOv8n with lightweight convolutional
+        operations, Efficient Channel Attention, Coordinate Attention,
+        and targeted detection-head refinements to improve hand detection
+        while reducing computational cost.
+      </figcaption>
     </figure>
+
   </div>
 </header>
 
@@ -365,9 +377,7 @@ hand tracking.</figcaption>
   <div class="wrap">
     <p class="section-kicker">Abstract</p>
     <div class="narrow" style="margin-top:22px">
-      <p>3D Morphable Models (3DMMs) remain the standard parametric shape priors behind state-of-the-art 3D face reconstruction. Because they are built from a finite set of 3D face scans, they inherit the morphological biases of that data, which can limit how well they generalize across diverse populations.</p>
-      <p>We analyze 3DMM reconstructions through the lens of surface curvature, in order to discover, quantify, and visualize these biases. Where standard metrics rely on Euclidean distances, our error captures subtle surface nuances such as local topology and undulations. Using the Laplace-Beltrami operator, we generate high-resolution curvature error maps that give a localized, geometrically meaningful picture of where a reconstruction departs from the ground truth. We derive a scalar metric from these maps and validate it in a user study, finding a significantly higher correlation with human perception than traditional methods.</p>
-      <p>Across several 3DMM bases and fitting algorithms, we uncover systematic age-related biases and present preliminary evidence of gender- and ethnicity-related biases. These findings argue for curvature-aware evaluation protocols to ensure both demographic fairness and geometric precision in future 3D face reconstruction research.</p>
+      <p> This paper presents LiteHand-YOLO, a lightweight single-stage hand detector designed for real-time robotic vision. Built on the YOLOv8n backbone, the model incorporates depthwise separable convolutions and cross-stage partial connections, augmented by Efficient Channel Attention (ECA) for channel recalibration and Coordinate Attention (CoordAtt) for spatial localization, together with targeted detection head refinements. Trained and evaluated on the Hand Keypoints dataset, LiteHand-YOLO achieves 99.26 % mAP@0.5 and 91.42 % mAP@0.5:0.95, outperforming the baseline YOLOv8n by +0.08 % and +1.30 % respectively, while reducing computational cost by 28 % (6.4 GFLOPs) and parameters by 35 % (2.06 M). On an Intel Core i7-6700 CPU (no GPU), it delivers 8.83 FPS with mean confidence of 0.87, a 6.4 % speed gain and 12.8 % higher precision over the baseline. These results enable reliable, low-latency hand detection on resource constrained platforms, supporting vision guided grasping, gesture based teleoperation, and safe human-robot collaboration in dynamic environments.</p>
     </div>
   </div>
 </section>
